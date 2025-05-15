@@ -1,0 +1,1172 @@
+/* ============================================
+   CONTENEDOR PRINCIPAL DEL BUSCADOR FUSE.JS
+============================================ */
+.fuse-search-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin-top: 20px;
+  font-family: system-ui, sans-serif;
+}
+
+/* ============================================
+   COLUMNA IZQUIERDA – BARRA Y FILTROS
+============================================ */
+.fuse-search-left {
+  flex: 1 1 250px;
+  max-width: 400px;
+}
+
+#fuse-search-input {
+  width: 100%;
+  padding: 10px 14px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-bottom: 15px;
+}
+
+#fuse-filters label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* ============================================
+   COLUMNA DERECHA – CONTENEDOR DE RESULTADOS
+============================================ */
+.fuse-search-right {
+  display: block;
+  flex: 2 1 600px;
+}
+
+/* Grid: solo se aplica si el layout es grid */
+.fuse-search-wrapper[data-layout="grid"] .fuse-search-right {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+
+/* ============================================
+   LISTA DE RESULTADOS
+============================================ */
+#fuse-results {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* ============================================
+   DISEÑO VISUAL DE RESULTADOS – CAJAS SOMBREADAS
+============================================ */
+.fuse-result-box {
+  margin-bottom: 24px;
+  padding: 16px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.fuse-result-box:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+}
+
+.fuse-result-item {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.fuse-result-item img {
+  width: 120px;
+  height: auto;
+  object-fit: cover;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.fuse-result-info {
+  flex: 1;
+}
+
+.fuse-result-info a {
+  font-size: 18px;
+  font-weight: bold;
+  color: #0073aa;
+  text-decoration: none;
+}
+
+.fuse-result-info a:hover {
+  text-decoration: underline;
+}
+
+.fuse-result-info p {
+  margin-top: 6px;
+  font-size: 15px;
+  color: #333;
+}
+
+.fuse-result-info small {
+  display: block;
+  margin-top: 4px;
+  color: #777;
+  font-size: 13px;
+}
+
+/* ============================================
+   MENSAJE CUANDO NO HAY RESULTADOS
+============================================ */
+.fuse-no-results {
+  text-align: center;
+  padding: 20px;
+  background: #fff3cd;
+  border: 1px solid #ffeeba;
+  color: #856404;
+  border-radius: 6px;
+  margin-top: 15px;
+}
+
+/* ============================================
+   PAGINACIÓN MEJORADA
+============================================ */
+
+#fuse-pagination {
+  text-align: center;
+  margin-top: 30px;
+  width: 100%;
+}
+
+.fuse-pagination-nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.fuse-pagination-nav button {
+  all: unset;
+  min-width: 22px!important;
+  height: 22px!important;
+  padding: 0 2px!important;
+  text-align: center;
+  font-size: 12px!important;
+  font-weight: 500;
+  color: #0073aa;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #fff;
+  transition: all 0.2s ease;
+}
+
+.fuse-pagination-nav button:hover {
+  background: #e6f4ff;
+  border-color: #0073aa;
+}
+
+.fuse-pagination-nav button:disabled {
+  background: #d1d5db;
+  color: #555;
+  border: 1px solid #999;
+  cursor: default;
+}
+
+.fuse-pagination-nav span {
+  padding: 0 6px;
+  font-size: 16px;
+  color: #555;
+}
+
+.fuse-pagination-counter {
+  font-size: 14px;
+  color: #444;
+  margin-right: 20px;
+}
+
+
+/* ============================================
+   VARIACIONES DE LAYOUTS
+============================================ */
+
+/* Listado sin imagen */
+.fuse-result-item.list-layout,
+.fuse-result-item.minimal-layout {
+  flex-direction: column;
+  text-align: left;
+}
+
+.fuse-result-item.list-layout img,
+.fuse-result-item.minimal-layout img {
+  display: none;
+}
+
+.fuse-result-item.minimal-layout a {
+  font-size: 17px;
+  color: #0073aa;
+}
+
+/* Cards ya tiene visual de caja heredado del box */
+.fuse-result-item.cards-layout {
+  /* Usa el mismo estilo general de caja */
+}
+
+/* ============================================
+   BLOQUE DE SUGERENCIA (ACORDEÓN)
+============================================ */
+.fuse-filter-suggestion {
+  margin-bottom: 20px;
+  background: #f5f9fc;
+  border: 1px solid #d0e3f0;
+  padding: 12px;
+  border-radius: 6px;
+}
+
+.fuse-toggle-suggestion {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  color: #0073aa;
+  font-size: 15px;
+  border: 1px solid #0073aa;
+  border-radius: 4px;
+  padding: 6px 10px;
+  background: #ffffff;
+  transition: background 0.2s, border 0.2s;
+}
+
+.fuse-toggle-suggestion:hover {
+  background: #e6f0fb;
+}
+
+.fuse-suggestion-content {
+  margin-top: 12px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #333;
+}
+
+/* ============================================
+   BARRA DE BÚSQUEDA PERSONALIZADA (layout="barra")
+============================================ */
+.fuse-search-barra {
+  width: 100% !important;
+  text-align: center !important;
+  margin: 20px auto !important;
+}
+
+.fuse-search-barra form {
+  display: inline-flex !important;
+  border: 1px solid #ccc !important;
+  border-radius: 999px !important;
+  overflow: hidden !important;
+  max-width: 100% !important;
+  width: 100% !important;
+  background: white !important;
+}
+
+.fuse-search-barra input {
+  border: none !important;
+  padding: 10px 16px !important;
+  font-size: 16px !important;
+  flex: 1 !important;
+  outline: none !important;
+  font-family: inherit !important;
+  color: #333 !important;
+}
+
+.fuse-search-barra button {
+  background: none !important;
+  border: none !important;
+  padding: 0 16px !important;
+  font-size: 18px !important;
+  cursor: pointer !important;
+  color: #0073aa !important;
+}
+
+.fuse-search-barra button:hover {
+  color: #005b8e !important;
+}
+
+/* ============================================
+   ADAPTACIÓN PARA DISPOSITIVOS MÓVILES
+============================================ */
+@media (max-width: 768px) {
+  .fuse-search-wrapper {
+    flex-direction: column;
+  }
+
+  .fuse-search-left,
+  .fuse-search-right {
+    max-width: 100%;
+    flex: 1 1 100%;
+  }
+
+  .fuse-result-item {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .fuse-result-item img {
+    width: 100%;
+    height: auto;
+    margin-bottom: 12px;
+  }
+/**/
+	
+	/* ============================================
+   ESTILO DEFAULT - BUSCADOR BASE
+   Mejora de filtros y estilo visual
+============================================ */
+
+.fuse-search-wrapper[data-layout="default"] {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin-top: 20px;
+  font-family: system-ui, sans-serif;
+}
+
+/* FILTROS IZQUIERDA CON ESTILO MEJORADO */
+.fuse-search-wrapper[data-layout="default"] .fuse-search-left {
+  flex: 1 1 250px;
+  max-width: 280px;
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 20px;
+  font-size: 15px;
+}
+
+.fuse-search-wrapper[data-layout="default"] .fuse-search-left label {
+  display: block;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  font-size: 14px;
+  color: #333;
+}
+
+/* RESULTADOS DERECHA */
+.fuse-search-wrapper[data-layout="default"] .fuse-search-right {
+  flex: 2 1 600px;
+}
+
+#fuse-results {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* CAJAS DE RESULTADOS MEJORADAS */
+.fuse-result-box {
+  margin-bottom: 24px;
+  padding: 16px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.fuse-result-item {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.fuse-result-item img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.fuse-result-info {
+  flex: 1;
+}
+
+.fuse-result-info a {
+  font-size: 18px;
+  font-weight: bold;
+  color: #0073aa;
+  text-decoration: none;
+}
+
+.fuse-result-info a:hover {
+  text-decoration: underline;
+}
+
+.fuse-result-info p {
+  margin: 6px 0;
+  font-size: 15px;
+  color: #333;
+}
+
+.fuse-result-info small {
+  color: #777;
+  font-size: 13px;
+}
+
+/* PAGINACIÓN */
+#fuse-pagination {
+  text-align: center;
+  margin-top: 30px;
+  width: 100%;
+}
+
+.fuse-pagination-nav {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.fuse-pagination-nav button {
+  padding: 8px 14px;
+  background: #0073aa;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.fuse-pagination-nav button:hover {
+  background: #005b8e;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .fuse-search-wrapper[data-layout="default"] {
+    flex-direction: column;
+  }
+
+  .fuse-search-left,
+  .fuse-search-right {
+    max-width: 100%;
+    flex: 1 1 100%;
+  }
+
+  .fuse-result-item {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .fuse-result-item img {
+    width: 100%;
+    height: auto;
+    margin-bottom: 12px;
+  }
+
+  .fuse-result-info {
+    text-align: left;
+  }
+}
+
+  .fuse-search-wrapper[data-layout="grid"] .fuse-search-right {
+    grid-template-columns: 1fr;
+  }
+
+  .fuse-result-info {
+    text-align: left;
+  }
+}
+/**/
+/* ============================================
+   LAYOUT EDUCAR - BÚSQUEDA TIPO TARJETAS (Final)
+   Inspirado en www.educ.ar
+============================================ */
+
+.fuse-search-wrapper[data-layout="educar"] {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 30px;
+  margin-top: 20px;
+  align-items: flex-start;
+}
+
+/* ============================================
+   COLUMNA DE FILTROS IZQUIERDA
+============================================ */
+.fuse-search-wrapper[data-layout="educar"] .fuse-search-left {
+  width: 280px;
+  flex-shrink: 0;
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 24px 20px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+  font-size: 15px;
+}
+
+.fuse-search-wrapper[data-layout="educar"] .fuse-search-left h3 {
+  font-size: 16px;
+  font-weight: bold;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 6px;
+  margin-top: 24px;
+  margin-bottom: 12px;
+  color: #111;
+}
+
+.fuse-search-wrapper[data-layout="educar"] .fuse-search-left label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 6px 0;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  font-size: 14px;
+  color: #333;
+}
+
+/* Bloque sugerencia de búsqueda eficaz */
+.fuse-search-wrapper[data-layout="educar"] .fuse-filter-suggestion {
+  margin-top: 20px;
+  background: #eef4fb;
+  border-left: 4px solid #0073aa;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #333;
+}
+
+.fuse-search-wrapper[data-layout="educar"] .fuse-filter-suggestion strong {
+  display: block;
+  margin-bottom: 6px;
+}
+
+/* ============================================
+   RESULTADOS COMO TARJETAS EN GRID
+============================================ */
+.fuse-search-wrapper[data-layout="educar"] .fuse-search-right {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.fuse-search-wrapper[data-layout="educar"] .fuse-result-box {
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  padding: 16px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.fuse-search-wrapper[data-layout="educar"] .fuse-result-box:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.fuse-search-wrapper[data-layout="educar"] .fuse-result-item {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.fuse-search-wrapper[data-layout="educar"] .fuse-result-item img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.fuse-search-wrapper[data-layout="educar"] .fuse-result-info a {
+  font-size: 17px;
+  font-weight: bold;
+  color: #0073aa;
+  text-decoration: none;
+}
+
+.fuse-search-wrapper[data-layout="educar"] .fuse-result-info p {
+  font-size: 14px;
+  color: #444;
+  margin: 0;
+}
+
+.fuse-search-wrapper[data-layout="educar"] .fuse-result-info small {
+  color: #888;
+  font-size: 12px;
+}
+
+/* ============================================
+   PAGINACIÓN CENTRADA AL PIE DEL GRID
+============================================ */
+.fuse-search-wrapper[data-layout="educar"] #fuse-pagination {
+  grid-column: 1 / -1;
+  text-align: center;
+  margin-top: 40px;
+}
+
+.fuse-search-wrapper[data-layout="educar"] .fuse-pagination-nav {
+  display: inline-flex;
+  gap: 10px;
+}
+
+.fuse-search-wrapper[data-layout="educar"] .fuse-pagination-nav button {
+  padding: 8px 14px;
+  background: #0073aa;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s ease;
+}
+
+.fuse-search-wrapper[data-layout="educar"] .fuse-pagination-nav button:hover {
+  background: #005b8e;
+}
+
+/* ============================================
+   RESPONSIVE PARA CELULARES
+============================================ */
+@media (max-width: 768px) {
+  .fuse-search-wrapper[data-layout="educar"] {
+    flex-direction: column;
+  }
+
+  .fuse-search-wrapper[data-layout="educar"] .fuse-search-left {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .fuse-search-wrapper[data-layout="educar"] .fuse-search-right {
+    grid-template-columns: 1fr;
+  }
+
+  .fuse-search-wrapper[data-layout="educar"] .fuse-result-box {
+    padding: 14px;
+  }
+}
+/**/
+
+/* ============================================
+   ESTILO DEFAULT - BUSCADOR BASE
+   Mejora de filtros y estilo visual
+============================================ */
+
+.fuse-search-wrapper[data-layout="default"] {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin-top: 20px;
+  font-family: system-ui, sans-serif;
+}
+
+/* FILTROS IZQUIERDA CON ESTILO MEJORADO */
+.fuse-search-wrapper[data-layout="default"] .fuse-search-left {
+  flex: 1 1 250px;
+  max-width: 280px;
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 20px;
+  font-size: 15px;
+}
+
+.fuse-search-wrapper[data-layout="default"] .fuse-search-left label {
+  display: block;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  font-size: 14px;
+  color: #333;
+}
+
+/* RESULTADOS DERECHA */
+.fuse-search-wrapper[data-layout="default"] .fuse-search-right {
+  flex: 2 1 600px;
+}
+
+#fuse-results {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* CAJAS DE RESULTADOS MEJORADAS */
+.fuse-result-box {
+  margin-bottom: 24px;
+  padding: 16px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.fuse-result-item {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.fuse-result-item img {
+  width: 180px !important;
+  height: 130px!important;
+  object-fit: cover;
+  border-radius: 12px!important; /* Aumenté de 10px a 12px para más redondez */
+  flex-shrink: 0;
+  transition: all 0.3s ease!important; /* Agrego transición para efectos hover */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1)!important; /* Sutil sombra para profundidad */
+}
+
+/* Efecto hover para imágenes */
+.fuse-result-item img:hover {
+  border-radius: 16px!important; /* Más redondez al pasar el mouse */
+  transform: scale(1.02)!important; /* Ligero zoom */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15)!important;
+}
+.fuse-result-info {
+  flex: 1;
+}
+
+.fuse-result-info a {
+  font-size: 18px;
+  font-weight: bold;
+  color: #0073aa;
+  text-decoration: none;
+}
+
+.fuse-result-info a:hover {
+  text-decoration: underline;
+}
+
+.fuse-result-info p {
+  margin: 6px 0;
+  font-size: 15px;
+  color: #333;
+}
+
+.fuse-result-info small {
+  color: #777;
+  font-size: 13px;
+}
+
+/* PAGINACIÓN */
+#fuse-pagination {
+  text-align: center;
+  margin-top: 30px;
+  width: 100%;
+}
+
+.fuse-pagination-nav {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.fuse-pagination-nav button {
+  padding: 8px 14px;
+  background: #0073aa;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.fuse-pagination-nav button:hover {
+  background: #005b8e;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .fuse-search-wrapper[data-layout="default"] {
+    flex-direction: column;
+  }
+
+  .fuse-search-left,
+  .fuse-search-right {
+    max-width: 100%;
+    flex: 1 1 100%;
+  }
+
+  .fuse-result-item {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .fuse-result-item img {
+    width: 100%;
+    height: auto;
+    margin-bottom: 12px;
+  }
+
+  .fuse-result-info {
+    text-align: left;
+  }
+}
+.fuse-search-wrapper[data-layout="educar2"] {
+  display: flex;
+  align-items: flex-start;
+  gap: 30px;
+  margin-top: 20px;
+  font-family: system-ui, sans-serif;
+}
+
+/* FILTROS IZQUIERDA */
+.fuse-search-wrapper[data-layout="educar2"] .fuse-search-left {
+  width: 380px!important;
+  flex-shrink: 0;
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 28px 26px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  font-size: 15px;
+}
+
+
+.fuse-search-wrapper[data-layout="educar2"] .fuse-search-left input[type="text"] {
+  width: 100%;
+  padding: 10px 14px;
+  font-size: 15px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-bottom: 20px;
+}
+
+/* Estilo filtro */
+.fuse-search-wrapper[data-layout="educar2"] .fuse-filter-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  border-bottom: 1px solid #BB9E70/*azul institucional #000F9F*/;
+  font-size: 14px;
+  color: #333;
+}
+
+/* SUGERENCIA */
+.fuse-search-wrapper[data-layout="educar2"] .fuse-filter-suggestion {
+  margin-top: 24px;
+  background: #eef4fb;
+  border-left: 4px solid #0073aa;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.fuse-search-wrapper[data-layout="educar2"] .fuse-toggle-suggestion {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  color: #0073aa;
+  font-size: 14px;
+  border: 1px solid #0073aa;
+  border-radius: 6px;
+  padding: 6px 10px;
+  background: #ffffff;
+  margin-bottom: 10px;
+  transition: background 0.2s;
+}
+
+.fuse-search-wrapper[data-layout="educar2"] .fuse-toggle-suggestion:hover {
+  background: #e6f0fb;
+}
+
+/* RESULTADOS DERECHA */
+.fuse-search-wrapper[data-layout="educar2"] .fuse-search-right {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 0;
+}
+
+/* Tarjeta */
+.fuse-search-wrapper[data-layout="educar2"] .fuse-result-box {
+  max-width: 1200px;
+  background: #ffffff;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08), inset 0 0 2px rgba(0, 0, 0, 0.02);
+  padding: 18px;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.fuse-search-wrapper[data-layout="educar2"] .fuse-result-box:hover {
+  transform: translateY(-3px) scale(1.01);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12), inset 0 0 2px rgba(0, 0, 0, 0.03);
+}
+
+
+.fuse-search-wrapper[data-layout="educar2"] .fuse-result-item {
+  display: flex;
+  gap: 16px;
+}
+
+.fuse-search-wrapper[data-layout="educar2"] .fuse-result-item img {
+  width: 120px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.fuse-search-wrapper[data-layout="educar2"] .fuse-result-info {
+  flex: 1;
+}
+
+.fuse-search-wrapper[data-layout="educar2"] .fuse-result-info a {
+  font-size: 17px;
+  font-weight: bold;
+  color: #0073aa;
+  text-decoration: none;
+}
+
+.fuse-search-wrapper[data-layout="educar2"] .fuse-result-info a:hover {
+  text-decoration: underline;
+}
+
+.fuse-search-wrapper[data-layout="educar2"] .fuse-result-info p {
+  font-size: 14px;
+  color: #444;
+  margin: 6px 0;
+}
+
+.fuse-search-wrapper[data-layout="educar2"] .fuse-result-info small {
+  font-size: 12px;
+  color: #888;
+}
+
+/* PAGINACIÓN */
+.fuse-search-wrapper[data-layout="educar2"] #fuse-pagination {
+  margin-top: 40px;
+  text-align: center;
+}
+
+.fuse-search-wrapper[data-layout="educar2"] .fuse-pagination-nav {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.fuse-search-wrapper[data-layout="educar2"] .fuse-pagination-nav button {
+  padding: 8px 14px;
+  background: #0073aa;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.fuse-search-wrapper[data-layout="educar2"] .fuse-pagination-nav button:hover {
+  background: #005b8e;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .fuse-search-wrapper[data-layout="educar2"] {
+    flex-direction: column;
+  }
+
+  .fuse-search-wrapper[data-layout="educar2"] .fuse-search-left {
+    width: 100%;
+  }
+
+  .fuse-search-wrapper[data-layout="educar2"] .fuse-search-right {
+    width: 100%;
+  }
+
+  .fuse-search-wrapper[data-layout="educar2"] .fuse-result-box {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .fuse-search-wrapper[data-layout="educar2"] .fuse-result-item {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .fuse-search-wrapper[data-layout="educar2"] .fuse-result-info {
+    text-align: left;
+  }
+
+  .fuse-search-wrapper[data-layout="educar2"] .fuse-result-item img {
+    width: 100%;
+    height: auto;
+  }
+}
+/* ============================================
+   Toggle para incluir archivos históricos
+   Ubicado dentro de la columna izquierda
+============================================ */
+.fuse-historico-toggle {
+  margin-top: 16px;
+  margin-bottom: 16px;
+  padding: 10px 14px;
+  border: 1px solid #0073aa;
+  border-radius: 6px;
+  background: #f0f8ff;
+  font-size: 14px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.fuse-switch {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #0073aa;
+  font-weight: 500;
+}
+
+.fuse-switch input[type="checkbox"] {
+  display: none;
+}
+
+.fuse-switch .switch-toggle {
+  position: relative;
+  width: 42px;
+  height: 22px;
+  background: #ccc;
+  border-radius: 22px;
+  cursor: pointer;
+  transition: background 0.3s;
+  flex-shrink: 0;
+}
+
+.fuse-switch .switch-toggle::before {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  background: white;
+  border-radius: 50%;
+  transition: transform 0.3s;
+}
+
+.fuse-switch input[type="checkbox"]:checked + .switch-toggle {
+  background: #0073aa;
+}
+
+.fuse-switch input[type="checkbox"]:checked + .switch-toggle::before {
+  transform: translateX(20px);
+}
+
+.fuse-switch .switch-label {
+  font-size: 14px;
+  line-height: 1;
+  cursor: help;
+}
+/*AQUI EMPIEZA EL TOOLTIPS*/
+.fuse-tooltip-container {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 1rem;
+}
+
+.fuse-tooltip-icon {
+  font-size: 20px;
+  cursor: help;
+  border-radius: 50%;
+  padding: 0.2rem 0.4rem;
+  background-color: #eef6ff;
+  /*border: 1px solid #b3d7ff;*/
+}
+
+.fuse-tooltip-text {
+  visibility: hidden;
+  background-color: #fff;
+  color: #333;
+  text-align: left;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  padding: 10px;
+  width: 260px;
+  position: absolute;
+  z-index: 999;
+  top: 130%;
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  font-size: 14px;
+}
+
+.fuse-tooltip-container:hover .fuse-tooltip-text {
+  visibility: visible;
+}
+.fuse-tooltip-dark {
+  display: inline-block;
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.fuse-tooltip-target {
+  cursor: help;
+  position: relative;
+  font-size: 20px;
+  display: inline-block;
+}
+
+.fuse-tooltip-bubble {
+  visibility: hidden;
+  opacity: 0;
+  width: 260px;
+  background-color: #333;
+  color: #fff;
+  text-align: left;
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 13px;
+  line-height: 1.4;
+  position: absolute;
+  bottom: 125%; /* aparece arriba */
+  left: 50%;
+  transform: translateX(-50%);
+  transition: opacity 0.3s;
+  z-index: 999;
+}
+
+.fuse-tooltip-bubble::after {
+  content: "";
+  position: absolute;
+  top: 100%; /* flecha apunta hacia abajo */
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #333 transparent transparent transparent;
+}
+
+.fuse-tooltip-target:hover .fuse-tooltip-bubble {
+  visibility: visible;
+  opacity: 1;
+}
